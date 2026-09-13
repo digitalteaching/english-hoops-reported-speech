@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>English Hoops · Reported Speech</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23101c2b'/><circle cx='32' cy='34' r='15' fill='%23ff934f'/><path d='M17 34h30M32 19v30' stroke='%23101c2b' stroke-width='3'/><rect x='14' y='9' width='36' height='6' rx='3' fill='%2353d6f5'/></svg>">
+<style>
+*{box-sizing:border-box}
+:root{
+  --hall:#101c2b;
+  --bg:#0a1420;
+  --teamA:#53d6f5;
+  --teamB:#ff947d;
+  --accent:#ff934f;
+  --accent2:#fa8748;
+  --ink:#142537;
+  --ok:#08774f;
+  --bad:#b43335;
+  --panelA:#eef5fd;
+  --panelB:#fdf1ec;
+  --muted:#93a7bd;
+  --line:rgba(255,255,255,.10);
+  --court-ar:600/280;
+  --gap:10px;
+}
+html,body{margin:0;padding:0;overscroll-behavior:none}
+body{
+  background:var(--bg);
+  color:#e9f1fa;
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow-x:hidden;
+  -webkit-text-size-adjust:100%;
+}
+button,input{font-family:Arial,Helvetica,sans-serif}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer}
+:focus-visible{outline:3px solid #ffd08a;outline-offset:3px}
+.lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.wrap{width:100%;max-width:1600px;margin:0 auto;padding:0 var(--gap)}
+
+.topbar{background:var(--hall);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;min-height:56px;padding-top:6px;padding-bottom:6px}
+.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.brand .mark{width:32px;height:32px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent2));position:relative;flex:0 0 auto}
+.brand .mark::before,.brand .mark::after{content:"";position:absolute;background:var(--hall)}
+.brand .mark::before{left:2px;right:2px;top:15px;height:2px}
+.brand .mark::after{top:2px;bottom:2px;left:15px;width:2px}
+.brand .name{font-size:19px;font-weight:900;letter-spacing:-.02em;white-space:nowrap}
+.brand .name span{color:var(--accent)}
+.subject{flex:1 1 auto;text-align:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.topbtns{display:flex;gap:8px;flex:0 0 auto}
+.ghost{min-height:44px;padding:0 14px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:#dce8f4;font-size:13px;font-weight:700;letter-spacing:.04em}
+.ghost:active{background:rgba(255,255,255,.12)}
+
+.board{background:var(--hall)}
+.board .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding-top:8px;padding-bottom:10px}
+.side{display:flex;flex-direction:column;gap:2px}
+.side.right{align-items:flex-end;text-align:right}
+.tname{font-size:14px;font-weight:900;letter-spacing:.04em}
+.tsub{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.score{font-size:52px;line-height:.95;font-weight:900;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.a .tname,.a .score{color:var(--teamA)}
+.b .tname,.b .score{color:var(--teamB)}
+.centre{text-align:center;min-width:150px}
+.clock{font-size:44px;line-height:1;font-weight:900;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#f3f8ff}
+.clock.warn{color:#ffbe6b}
+.status{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:4px;min-height:14px}
+
+.courts{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.court{position:relative;min-width:0;aspect-ratio:var(--court-ar);border-radius:16px 16px 0 0;overflow:hidden;background:#0d1a2a}
+.court canvas{display:block;width:100%;height:100%}
+.corner{position:absolute;top:8px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;background:rgba(8,16,26,.55);padding:4px 8px;border-radius:8px}
+.court.a .corner{left:8px;color:var(--teamA)}
+.court.b .corner{right:8px;color:var(--teamB)}
+.swish{position:absolute;left:50%;top:14%;transform:translate(-50%,0);font-size:22px;font-weight:900;letter-spacing:-.02em;text-shadow:0 2px 0 rgba(0,0,0,.45);pointer-events:none;opacity:0}
+.court.a .swish{color:var(--teamA)}
+.court.b .swish{color:var(--teamB)}
+.swish.show{animation:rise 1.3s ease-out forwards}
+@keyframes rise{0%{opacity:0;transform:translate(-50%,12px)}18%{opacity:1}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-34px)}}
+
+.timebar{position:relative;height:6px;background:#0a1420;overflow:hidden}
+.timebar .fill{position:absolute;inset:0;background:linear-gradient(90deg,var(--teamA),#ffffff,var(--teamB))}
+.timebar .mask{position:absolute;top:0;right:0;bottom:0;width:0%;background:#0a1420}
+
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:var(--gap)}
+.task{background:var(--panelA);color:var(--ink);border-radius:0 0 16px 16px;padding:14px 14px 12px;display:flex;flex-direction:column;min-width:0}
+.task.b{background:var(--panelB)}
+.taskhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.chip{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;background:rgba(20,37,55,.10);color:#31506e;padding:5px 9px;border-radius:99px}
+.qnum{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#5b7590}
+.sentence{font-size:19px;line-height:1.42;font-weight:700;margin:2px 0 12px;overflow-wrap:break-word}
+.gap{display:inline-block;color:#c85a18;background:rgba(255,147,79,.16);border-radius:6px;padding:1px 9px 2px;margin:0 1px;letter-spacing:1px;font-weight:900}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid>*{min-width:0}
+.ans{display:flex;align-items:center;gap:9px;min-width:0;overflow-wrap:break-word;min-height:52px;padding:8px 10px;text-align:left;border-radius:12px;border:1px solid #ccd8e4;border-bottom:5px solid #b9c8d6;background:#fff;color:var(--ink);font-size:16px;font-weight:700;line-height:1.2}
+.ans .badge{flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:#e6edf4;color:#4a6786;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.ans:active{border-bottom-width:2px;transform:translateY(3px)}
+.ans[disabled]{opacity:.92}
+.ans.correct{background:var(--ok);border-color:#05513a;border-bottom-color:#043a2a;color:#fff}
+.ans.correct .badge{background:rgba(255,255,255,.22);color:#fff}
+.ans.wrong{background:var(--bad);border-color:#8a2527;border-bottom-color:#6d1d1f;color:#fff}
+.ans.wrong .badge{background:rgba(255,255,255,.22);color:#fff}
+.fb{min-height:44px;margin-top:10px;font-size:14px;line-height:1.35;font-weight:700;color:#33506d;display:flex;align-items:center}
+.fb.good{color:#065d3e}
+.fb.bad{color:#8f2a2c}
+
+.foot{margin-top:auto}
+.foot .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:8px;padding-bottom:10px}
+.foot .rule{font-size:12px;color:var(--muted)}
+.linkbtn{background:none;border:none;color:#bcd3e8;font-size:13px;font-weight:700;text-decoration:underline;min-height:44px;padding:0 6px}
+
+.rotate{display:none;background:rgba(255,147,79,.14);color:#ffd0ab;font-size:12px;font-weight:700;text-align:center;padding:8px 12px}
+
+.countdown{position:fixed;inset:0;background:rgba(6,13,22,.82);display:flex;align-items:center;justify-content:center;z-index:40}
+.countdown span{font-size:132px;font-weight:900;letter-spacing:-.06em;color:#fff;font-variant-numeric:tabular-nums}
+.countdown[hidden]{display:none}
+
+dialog{border:none;padding:0;border-radius:20px;background:#fff;color:var(--ink);max-width:min(600px,92vw);width:100%}
+dialog::backdrop{background:rgba(5,11,19,.74)}
+.dlg{padding:22px}
+.dlg h2{margin:0 0 6px;font-size:24px;letter-spacing:-.02em}
+.dlg p{margin:0 0 14px;font-size:15px;line-height:1.5;color:#33506d}
+.dlg h3{margin:16px 0 6px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b7590}
+fieldset{border:none;margin:0;padding:0}
+legend{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b7590;font-weight:700;padding:0 0 8px}
+.times{display:flex;flex-wrap:wrap;gap:8px}
+.time{min-height:46px;padding:0 16px;border-radius:12px;border:1px solid #ccd8e4;border-bottom:4px solid #b9c8d6;background:#fff;color:var(--ink);font-size:15px;font-weight:800}
+.time[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);border-bottom-color:#08131f;color:#fff}
+.custom{display:flex;align-items:center;gap:10px;margin-top:12px}
+.custom label{font-size:13px;font-weight:700;color:#33506d}
+.custom input{min-height:46px;width:120px;padding:0 12px;border-radius:12px;border:1px solid #ccd8e4;font-size:16px;font-weight:700;color:var(--ink);background:#fff}
+.custom input:disabled{background:#eef2f6;color:#8fa3b8}
+.err{margin:12px 0 0;color:#8f2a2c;font-size:14px;font-weight:700}
+.err[hidden]{display:none}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.primary{min-height:50px;padding:0 22px;border-radius:14px;border:none;background:linear-gradient(180deg,var(--accent),var(--accent2));color:#20140a;font-size:16px;font-weight:900;letter-spacing:.01em;box-shadow:0 4px 0 #c96a25}
+.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #c96a25}
+.secondary{min-height:50px;padding:0 20px;border-radius:14px;border:1px solid #ccd8e4;border-bottom:4px solid #b9c8d6;background:#fff;color:var(--ink);font-size:15px;font-weight:800}
+.secondary:active{border-bottom-width:2px;transform:translateY(2px)}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.rescard{border:1px solid #dde5ee;border-radius:14px;padding:12px}
+.rescard.a{border-left:6px solid var(--teamA)}
+.rescard.b{border-left:6px solid var(--teamB)}
+.rescard .big{font-size:38px;font-weight:900;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.rescard .meta{font-size:13px;color:#4a6786;font-weight:700;line-height:1.5}
+.legal{font-size:12px;line-height:1.5;color:#5b7590}
+
+@media (min-width:1500px){
+  .score{font-size:62px}
+  .clock{font-size:52px}
+  .sentence{font-size:21px}
+}
+@media (max-height:760px){
+  :root{--court-ar:600/210}
+  .score{font-size:42px}
+  .clock{font-size:36px}
+  .sentence{font-size:17px}
+  .ans{min-height:48px;font-size:15px}
+}
+@media (max-width:900px){
+  :root{--court-ar:600/350}
+  .grid{grid-template-columns:1fr}
+  .brand .name{font-size:16px}
+  .subject{display:none}
+  .score{font-size:40px}
+  .clock{font-size:34px}
+  .sentence{font-size:17px}
+  .rotate{display:block}
+}
+@media (max-width:560px){
+  :root{--gap:7px;--court-ar:600/400}
+  .topbar .wrap{min-height:50px}
+  .brand .mark{width:26px;height:26px}
+  .brand .mark::before{top:12px}
+  .brand .mark::after{left:12px}
+  .brand .name{font-size:14px}
+  .ghost{padding:0 10px;font-size:12px}
+  .score{font-size:32px}
+  .clock{font-size:28px}
+  .sentence{font-size:16px}
+  .task{padding:10px}
+  .rows{grid-template-columns:1fr}
+  .countdown span{font-size:96px}
+}
+@media (prefers-reduced-motion:reduce){
+  .swish.show{animation:none;opacity:1;transform:translate(-50%,-8px)}
+  .ans:active,.primary:active,.secondary:active,.time:active{transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar" aria-label="Game header">
+  <div class="wrap">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><span class="name">English <span>Hoops</span></span></div>
+    <div class="subject">English · Year 8 · Reported Speech</div>
+    <div class="topbtns">
+      <button type="button" class="ghost" id="btnPause">Pause</button>
+      <button type="button" class="ghost" id="btnDuration">Game length</button>
+    </div>
+  </div>
+</header>
+
+<section class="board" aria-label="Scoreboard">
+  <div class="wrap">
+    <div class="side a">
+      <div class="tname">Team Blue</div>
+      <div class="tsub">Left court</div>
+      <div class="score" id="scoreA" aria-label="Team Blue: 0 baskets">0</div>
+    </div>
+    <div class="centre">
+      <div class="lbl">Game clock</div>
+      <div class="clock" id="clock">02:00</div>
+      <div class="status" id="status">Tip-off</div>
+    </div>
+    <div class="side b right">
+      <div class="tname">Team Coral</div>
+      <div class="tsub">Right court</div>
+      <div class="score" id="scoreB" aria-label="Team Coral: 0 baskets">0</div>
+    </div>
+  </div>
+</section>
+
+<div class="rotate" id="rotateHint">Turn the iPad sideways — both courts get more room.</div>
+
+<main class="wrap" aria-label="Courts and questions">
+  <div class="courts">
+    <div class="court a">
+      <canvas id="canvasA" role="img" aria-label="Drawn basketball court for Team Blue: a player in front of a hoop in a full arena."></canvas>
+      <div class="corner">Team Blue</div>
+      <div class="swish" id="swishA">SWISH! +1</div>
+    </div>
+    <div class="court b">
+      <canvas id="canvasB" role="img" aria-label="Drawn basketball court for Team Coral: a player in front of a hoop in a full arena."></canvas>
+      <div class="corner">Team Coral</div>
+      <div class="swish" id="swishB">SWISH! +1</div>
+    </div>
+  </div>
+
+  <div class="timebar" aria-hidden="true"><div class="fill"></div><div class="mask" id="timeMask"></div></div>
+
+  <div class="tasks">
+    <section class="task a" aria-label="Question for Team Blue">
+      <div class="taskhead"><span class="chip" id="topicA">Reported speech</span><span class="qnum" id="numA">Question 1</span></div>
+      <p class="sentence" id="sentA"></p>
+      <div class="grid" id="gridA"></div>
+      <div class="fb" id="fbA" aria-live="polite"></div>
+    </section>
+    <section class="task b" aria-label="Question for Team Coral">
+      <div class="taskhead"><span class="chip" id="topicB">Reported speech</span><span class="qnum" id="numB">Question 1</span></div>
+      <p class="sentence" id="sentB"></p>
+      <div class="grid" id="gridB"></div>
+      <div class="fb" id="fbB" aria-live="polite"></div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot" aria-label="Footer">
+  <div class="wrap">
+    <span class="rule">One basket per correct answer — never a point off for a miss.</span>
+    <button type="button" class="linkbtn" id="btnHelp">How to play</button>
+  </div>
+</footer>
+
+<div class="countdown" id="countdown" hidden aria-live="assertive"><span id="countdownNum">3</span></div>
+
+<dialog id="dlgSetup" aria-label="Game setup">
+  <div class="dlg">
+    <h2>English Hoops · Reported Speech</h2>
+    <p>Two players, one iPad. Team Blue plays the left court, Team Coral the right one. Every question gives you a sentence in direct speech — fill the gap in the reported sentence.</p>
+    <fieldset>
+      <legend>Game length</legend>
+      <div class="times" id="times" role="group" aria-label="Game length">
+        <button type="button" class="time" data-sec="60" aria-pressed="false">1 min</button>
+        <button type="button" class="time" data-sec="120" aria-pressed="true">2 min</button>
+        <button type="button" class="time" data-sec="180" aria-pressed="false">3 min</button>
+        <button type="button" class="time" data-sec="300" aria-pressed="false">5 min</button>
+        <button type="button" class="time" data-sec="custom" aria-pressed="false">Custom</button>
+      </div>
+      <div class="custom">
+        <label for="customSec">Custom length in seconds (15–1800)</label>
+        <input type="number" id="customSec" min="15" max="1800" step="1" value="240" disabled>
+      </div>
+    </fieldset>
+    <p class="err" id="setupError" role="alert" hidden></p>
+    <div class="actions">
+      <button type="button" class="primary" id="btnStart">Start the game</button>
+      <button type="button" class="secondary" id="btnHelpSetup">How to play</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="dlgPause" aria-label="Paused">
+  <div class="dlg">
+    <h2>Game paused</h2>
+    <p>The clock is frozen for both teams. Nobody loses time.</p>
+    <div class="actions">
+      <button type="button" class="primary" id="btnResume">Back to the game</button>
+      <button type="button" class="secondary" id="btnPauseSetup">Change game length</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="dlgResult" aria-label="Final score">
+  <div class="dlg">
+    <h2 id="resultTitle">Final buzzer</h2>
+    <p id="resultLine">Well played.</p>
+    <div class="rows">
+      <div class="rescard a">
+        <div class="lbl">Team Blue</div>
+        <div class="big" id="resScoreA">0</div>
+        <div class="meta" id="resMetaA"></div>
+      </div>
+      <div class="rescard b">
+        <div class="lbl">Team Coral</div>
+        <div class="big" id="resScoreB">0</div>
+        <div class="meta" id="resMetaB"></div>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" id="btnRematch">Rematch</button>
+      <button type="button" class="secondary" id="btnResultSetup">Change game length</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="dlgHelp" aria-label="How to play">
+  <div class="dlg">
+    <h2>How to play</h2>
+    <p>Each question shows a sentence in direct speech and the same sentence in reported speech with one gap. Pick the form that fits the gap.</p>
+    <h3>Rules</h3>
+    <p>A correct answer scores one basket. A wrong answer scores nothing — there is never a point off. After every answer the solution and the rule appear for a moment, then that team moves on. Both teams get the same question number at the same level of difficulty, but never the same sentence, so copying from the neighbour does not help. The four options appear in a different order on each side.</p>
+    <h3>Controls</h3>
+    <p>Pause freezes the clock for both teams. Leaving the app pauses the game automatically. Escape closes the pause box and this box; the setup and the final score stay open until you choose a button.</p>
+    <h3>Data</h3>
+    <p>This game collects no data at all. Nothing is saved, no names, no results, no cookies, no storage. Closing the tab clears everything.</p>
+    <h3>Where everything comes from</h3>
+    <p>All questions were written for this game and are not taken from any textbook. Every graphic is drawn in code on a canvas — no images, no icons, no stock material. The typeface is whatever standard sans-serif your device already provides; no font file is loaded. The game runs completely offline and calls no server.</p>
+    <div class="actions">
+      <button type="button" class="primary" id="btnCloseHelp">Back to the game</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const T=['Present → Past','Past → Past Perfect','Present Perfect → Past Perfect','Progressive Forms','Can & Will','No Backshift'];
+
+const PAIRS=[
+[T[0],'“I play tennis every Friday,” said Mia. → Mia said that she ___ tennis every Friday.','“I play chess every Monday,” said Ben. → Ben said that he ___ chess every Monday.','played',['plays','has played','is playing'],'After a reporting verb in the past, the simple present becomes the simple past.'],
+[T[0],'“I am tired after the match,” said Lena. → Lena said that she ___ tired after the match.','“I am nervous before the test,” said Tom. → Tom said that he ___ nervous before the test.','was',['is','has been','were'],'The forms am and is shift back to was in reported speech.'],
+[T[0],'“We are ready for the trip,” said the students. → The students said that they ___ ready for the trip.','“We are late for the bus,” said the twins. → The twins said that they ___ late for the bus.','were',['are','was','have been'],'The plural form are shifts back to were when a sentence is reported.'],
+[T[0],'“I have a new bike,” said Jonas. → Jonas said that he ___ a new bike.','“I have a small dog,” said Ella. → Ella said that she ___ a small dog.','had',['has','has had','is having'],'The simple present have or has becomes the simple past had.'],
+[T[0],'“I live near the river,” said Nora. → Nora said that she ___ near the river.','“I live above a bakery,” said Karim. → Karim said that he ___ above a bakery.','lived',['lives','has lived','was living'],'A statement in the simple present is reported in the simple past.'],
+[T[0],'“I want a bigger room,” said Paul. → Paul said that he ___ a bigger room.','“I want a quieter desk,” said Sara. → Sara said that she ___ a quieter desk.','wanted',['wants','has wanted','would want'],'The simple present moves one step back into the simple past.'],
+[T[0],'“I know the answer,” said Finn. → Finn said that he ___ the answer.','“I know the way home,” said Ida. → Ida said that she ___ the way home.','knew',['knows','has known','had been knowing'],'The irregular verb know becomes knew when the tense shifts back.'],
+[T[0],'“I like cold weather,” said Ruben. → Ruben said that he ___ cold weather.','“I like loud music,” said Alina. → Alina said that she ___ loud music.','liked',['likes','has liked','is liking'],'Simple present turns into simple past in reported speech.'],
+[T[0],'“I speak three languages,” said Yusuf. → Yusuf said that he ___ three languages.','“I speak Spanish at home,” said Marta. → Marta said that she ___ Spanish at home.','spoke',['speaks','has spoken','was speaking'],'The simple present speak shifts back to the simple past spoke.'],
+[T[0],'“I need more time,” said Lars. → Lars said that he ___ more time.','“I need a new pen,” said Zoe. → Zoe said that she ___ a new pen.','needed',['needs','has needed','will need'],'In reported speech the present form need becomes needed.'],
+[T[0],'“I go swimming on Sundays,” said Milan. → Milan said that he ___ swimming on Sundays.','“I go running before school,” said Hanna. → Hanna said that she ___ running before school.','went',['goes','has gone','is going'],'Simple present go becomes the simple past went after said.'],
+[T[0],'“I think the film is boring,” said Emil. → Emil said that he ___ the film was boring.','“I think the book is funny,” said Nele. → Nele said that she ___ the book was funny.','thought',['thinks','has thought','was thinking'],'Think in the simple present is reported as the simple past thought.'],
+
+[T[1],'“We won the first round,” said the girls. → The girls said that they ___ the first round.','“We won the last game,” said the boys. → The boys said that they ___ the last game.','had won',['won','have won','were winning'],'A simple past in direct speech becomes the past perfect in reported speech.'],
+[T[1],'“I finished my project yesterday,” said Timo. → Timo said that he ___ his project the day before.','“I finished my essay last night,” said Julia. → Julia said that she ___ her essay the night before.','had finished',['finished','has finished','was finishing'],'The simple past shifts one step further back to the past perfect.'],
+[T[1],'“I lost my keys in the park,” said Nils. → Nils said that he ___ his keys in the park.','“I lost my ticket on the train,” said Maja. → Maja said that she ___ her ticket on the train.','had lost',['lost','have lost','was losing'],'The simple past lost becomes had lost when the sentence is reported.'],
+[T[1],'“I saw the new exhibition,” said Kian. → Kian said that he ___ the new exhibition.','“I saw the whole parade,” said Frida. → Frida said that she ___ the whole parade.','had seen',['saw','has seen','had been seeing'],'Reported speech moves the simple past saw back to the past perfect.'],
+[T[1],'“I bought a warm jacket,” said Omar. → Omar said that he ___ a warm jacket.','“I bought a second bag,” said Lucy. → Lucy said that she ___ a second bag.','had bought',['bought','has bought','was buying'],'Simple past becomes past perfect after a reporting verb in the past.'],
+[T[1],'“I wrote a long letter,” said Elias. → Elias said that he ___ a long letter.','“I wrote a short poem,” said Amina. → Amina said that she ___ a short poem.','had written',['wrote','have written','was writing'],'The simple past wrote shifts back to the past perfect had written.'],
+[T[1],'“I forgot my swimming kit,” said Theo. → Theo said that he ___ his swimming kit.','“I forgot my lunch box,” said Romy. → Romy said that she ___ her lunch box.','had forgotten',['forgot','have forgotten','was forgetting'],'In reported speech the simple past forgot becomes had forgotten.'],
+[T[1],'“I missed the early train,” said Jasper. → Jasper said that he ___ the early train.','“I missed the first scene,” said Clara. → Clara said that she ___ the first scene.','had missed',['missed','has missed','was missing'],'A completed action in the past is reported with the past perfect.'],
+[T[1],'“We met the new coach,” said the players. → The players said that they ___ the new coach.','“We met the school band,” said the singers. → The singers said that they ___ the school band.','had met',['met','have met','were meeting'],'The simple past met becomes had met one step further back.'],
+[T[1],'“I broke my old phone,” said Levi. → Levi said that he ___ his old phone.','“I broke my left arm,” said Tessa. → Tessa said that she ___ her left arm.','had broken',['broke','have broken','was breaking'],'The past perfect had broken reports a simple past from direct speech.'],
+[T[1],'“I told the truth,” said Samir. → Samir said that he ___ the truth.','“I told a funny story,” said Pia. → Pia said that she ___ a funny story.','had told',['told','have told','was telling'],'Simple past told shifts back to had told in reported speech.'],
+[T[1],'“I left the cinema early,” said Bruno. → Bruno said that he ___ the cinema early.','“I left the party late,” said Nina. → Nina said that she ___ the party late.','had left',['left','has left','was leaving'],'A simple past in direct speech becomes the past perfect when reported.'],
+
+[T[2],'“I have cleaned the whiteboard,” said Anton. → Anton said that he ___ the whiteboard.','“I have cleaned the fish tank,” said Leni. → Leni said that she ___ the fish tank.','had cleaned',['have cleaned','cleaned','was cleaning'],'The present perfect becomes the past perfect in reported speech.'],
+[T[2],'“I have packed my sports bag,” said Rico. → Rico said that he ___ his sports bag.','“I have packed my art folder,” said Yara. → Yara said that she ___ her art folder.','had packed',['have packed','packed','was packing'],'The present perfect shifts one step back to the past perfect.'],
+[T[2],'“I have found my glasses,” said Malte. → Malte said that he ___ his glasses.','“I have found my library card,” said Silke. → Silke said that she ___ her library card.','had found',['have found','found','was finding'],'Present perfect have found becomes had found after a past reporting verb.'],
+[T[2],'“I have eaten the whole pizza,” said Dario. → Dario said that he ___ the whole pizza.','“I have eaten all the grapes,” said Freya. → Freya said that she ___ all the grapes.','had eaten',['have eaten','ate','was eating'],'In reported speech the present perfect turns into the past perfect.'],
+[T[2],'“We have booked the small hall,” said the teachers. → The teachers said that they ___ the small hall.','“We have booked the music room,” said the parents. → The parents said that they ___ the music room.','had booked',['have booked','booked','were booking'],'The present perfect moves back to the past perfect when reported.'],
+[T[2],'“I have learned all the words,” said Tarek. → Tarek said that he ___ all the words.','“I have learned the whole song,” said Mira. → Mira said that she ___ the whole song.','had learned',['have learned','learned','was learning'],'Present perfect becomes past perfect, one step further back in time.'],
+[T[2],'“I have spoken to the coach,” said Vito. → Vito said that he ___ to the coach.','“I have spoken to the nurse,” said Anouk. → Anouk said that she ___ to the nurse.','had spoken',['have spoken','spoke','was speaking'],'The present perfect have spoken is reported as had spoken.'],
+[T[2],'“I have taken the wrong bus,” said Noel. → Noel said that he ___ the wrong bus.','“I have taken the last seat,” said Rosa. → Rosa said that she ___ the last seat.','had taken',['have taken','took','was taking'],'Present perfect shifts to past perfect in reported speech.'],
+[T[2],'“I have paid for the tickets,” said Janek. → Janek said that he ___ for the tickets.','“I have paid for the drinks,” said Selma. → Selma said that she ___ for the drinks.','had paid',['have paid','paid','was paying'],'The present perfect becomes the past perfect after a verb like said.'],
+[T[2],'“I have chosen a new topic,” said Ilias. → Ilias said that he ___ a new topic.','“I have chosen a red folder,” said Britt. → Britt said that she ___ a red folder.','had chosen',['have chosen','chose','was choosing'],'Present perfect have chosen turns into past perfect had chosen.'],
+[T[2],'“I have sent the invitation,” said Cem. → Cem said that he ___ the invitation.','“I have sent the photo,” said Lotta. → Lotta said that she ___ the photo.','had sent',['have sent','sent','was sending'],'In reported speech the present perfect steps back to the past perfect.'],
+[T[2],'“We have built a small robot,” said the club members. → The club members said that they ___ a small robot.','“We have built a paper bridge,” said the group. → The group said that they ___ a paper bridge.','had built',['have built','built','were building'],'The present perfect becomes the past perfect when the sentence is reported.'],
+
+[T[3],'“I am reading a mystery novel,” said Fabian. → Fabian said that he ___ a mystery novel.','“I am reading a science blog,” said Greta. → Greta said that she ___ a science blog.','was reading',['is reading','read','has been reading'],'The present progressive becomes the past progressive in reported speech.'],
+[T[3],'“I am waiting for my sister,” said Nico. → Nico said that he ___ for his sister.','“I am waiting for the results,” said Hana. → Hana said that she ___ for the results.','was waiting',['is waiting','waited','has been waiting'],'The pattern am or is plus -ing shifts back to was plus -ing.'],
+[T[3],'“We are working on a poster,” said the girls. → The girls said that they ___ on a poster.','“We are working on a website,” said the interns. → The interns said that they ___ on a website.','were working',['are working','worked','have been working'],'The plural present progressive are working becomes were working.'],
+[T[3],'“I am cooking a big soup,” said Piet. → Piet said that he ___ a big soup.','“I am cooking a rice dish,” said Salma. → Salma said that she ___ a rice dish.','was cooking',['is cooking','cooked','has been cooking'],'Present progressive turns into past progressive after a past reporting verb.'],
+[T[3],'“I am looking for my charger,” said Aron. → Aron said that he ___ for his charger.','“I am looking for a partner,” said Delia. → Delia said that she ___ for a partner.','was looking',['is looking','looked','had looked'],'An action in progress is reported with the past progressive.'],
+[T[3],'“I am learning the guitar,” said Ravi. → Ravi said that he ___ the guitar.','“I am learning sign language,” said Bente. → Bente said that she ___ sign language.','was learning',['is learning','learnt','has been learning'],'Present progressive am learning becomes past progressive was learning.'],
+[T[3],'“I am writing a short review,” said Kasper. → Kasper said that he ___ a short review.','“I am writing a travel diary,” said Nadia. → Nadia said that she ___ a travel diary.','was writing',['is writing','wrote','has been writing'],'In reported speech an action in progress shifts to the past progressive.'],
+[T[3],'“We are planning a class trip,” said the tutors. → The tutors said that they ___ a class trip.','“We are planning a charity run,” said the helpers. → The helpers said that they ___ a charity run.','were planning',['are planning','planned','have been planning'],'Are planning becomes were planning when the sentence is reported.'],
+[T[3],'“I am staying at my aunt’s house,” said Ole. → Ole said that he ___ at his aunt’s house.','“I am staying with my cousins,” said Marlene. → Marlene said that she ___ with her cousins.','was staying',['is staying','stayed','has been staying'],'The present progressive steps back to the past progressive.'],
+[T[3],'“I am training for a long race,” said Bela. → Bela said that he ___ for a long race.','“I am training with a new team,” said Runa. → Runa said that she ___ with a new team.','was training',['is training','trained','has been training'],'An action happening at the moment of speaking is reported with was plus -ing.'],
+[T[3],'“I am fixing my old radio,” said Milo. → Milo said that he ___ his old radio.','“I am fixing the garden gate,” said Talia. → Talia said that she ___ the garden gate.','was fixing',['is fixing','fixed','had fixed'],'Present progressive becomes past progressive in reported speech.'],
+[T[3],'“We are sitting in the back row,” said the visitors. → The visitors said that they ___ in the back row.','“We are sitting near the window,” said the guests. → The guests said that they ___ near the window.','were sitting',['are sitting','sat','have been sitting'],'The plural form are sitting shifts back to were sitting.'],
+
+[T[4],'“I can swim very fast,” said Jonte. → Jonte said that he ___ swim very fast.','“I can run very far,” said Alva. → Alva said that she ___ run very far.','could',['can','will','could have'],'The modal can becomes could in reported speech.'],
+[T[4],'“I can help on Saturday,” said Ramon. → Ramon said that he ___ help on Saturday.','“I can drive on Sunday,” said Wanda. → Wanda said that she ___ drive on Sunday.','could',['can','would','must'],'Can shifts back to could when the sentence is reported.'],
+[T[4],'“We can bring the drinks,” said the neighbours. → The neighbours said that they ___ bring the drinks.','“We can carry the boxes,” said the movers. → The movers said that they ___ carry the boxes.','could',['can','might','would'],'The present modal can turns into its past form could.'],
+[T[4],'“I can see the whole field,” said Mats. → Mats said that he ___ see the whole field.','“I can hear the loud bell,” said Fenna. → Fenna said that she ___ hear the loud bell.','could',['can','has could','would'],'Can becomes could, and a modal never takes an ending.'],
+[T[4],'“I can finish the drawing today,” said Enno. → Enno said that he ___ finish the drawing that day.','“I can start the report today,” said Livia. → Livia said that she ___ start the report that day.','could',['can','could have','will'],'Can shifts to could, and the time word today becomes that day.'],
+[T[4],'“I can explain the rule,” said Arne. → Arne said that he ___ explain the rule.','“I can repeat the question,” said Nour. → Nour said that she ___ repeat the question.','could',['can','may','must'],'In reported speech can always becomes could.'],
+[T[4],'“I will call you tomorrow,” said Halil. → Halil said that he ___ call me the next day.','“I will text you tonight,” said Josefine. → Josefine said that she ___ text me that night.','would',['will','would have','shall'],'The will future becomes would in reported speech.'],
+[T[4],'“I will bring my laptop,” said Nis. → Nis said that he ___ bring his laptop.','“I will lend my camera,” said Ayla. → Ayla said that she ___ lend her camera.','would',['will','would be','shall'],'Will shifts back to would after a reporting verb in the past.'],
+[T[4],'“We will win the tournament,” said the captains. → The captains said that they ___ win the tournament.','“We will host the final,” said the organisers. → The organisers said that they ___ host the final.','would',['will','would have','are going'],'The future with will becomes would when the sentence is reported.'],
+[T[4],'“I will study for the test,” said Tobias. → Tobias said that he ___ study for the test.','“I will practise for the concert,” said Elin. → Elin said that she ___ practise for the concert.','would',['will','would have','shall'],'Will plus infinitive turns into would plus infinitive.'],
+[T[4],'“I will not forget the date,” said Sven. → Sven said that he ___ not forget the date.','“I will not change the plan,” said Isa. → Isa said that she ___ not change the plan.','would',['will','would have','did'],'Even in a negative sentence will becomes would.'],
+[T[4],'“I will visit my grandparents,” said Matteo. → Matteo said that he ___ visit his grandparents.','“I will invite my classmates,” said Fiona. → Fiona said that she ___ invite her classmates.','would',['will','would have','was'],'A promise made with will is reported with would.'],
+
+[T[5],'“The shop had closed before we arrived,” said Ferdi. → Ferdi said that the shop ___ before they arrived.','“The gate had closed before we returned,” said Malin. → Malin said that the gate ___ before they returned.','had closed',['closed','has closed','would close'],'The past perfect is already the furthest step back, so it stays the same.'],
+[T[5],'“The film had started before I sat down,” said Kilian. → Kilian said that the film ___ before he sat down.','“The rain had started before I went out,” said Neele. → Neele said that the rain ___ before she went out.','had started',['started','has started','was starting'],'A past perfect in direct speech does not change in reported speech.'],
+[T[5],'“My brother had gone home before the break,” said Linus. → Linus said that his brother ___ home before the break.','“My cousin had gone upstairs before the guests came,” said Nika. → Nika said that her cousin ___ upstairs before the guests came.','had gone',['went','has gone','would go'],'There is no tense further back than the past perfect, so the form stays.'],
+[T[5],'“The keys had disappeared before the trip,” said Ronan. → Ronan said that the keys ___ before the trip.','“The money had disappeared before the market,” said Suri. → Suri said that the money ___ before the market.','had disappeared',['disappeared','have disappeared','were disappearing'],'The past perfect remains unchanged when a sentence is reported.'],
+[T[5],'“I would love a longer break,” said Joris. → Joris said that he ___ love a longer break.','“I would enjoy a quiet room,” said Tuva. → Tuva said that she ___ enjoy a quiet room.','would',['will','would have','had would'],'Would does not change in reported speech because it is already a past form.'],
+[T[5],'“I would never copy an answer,” said Sami. → Sami said that he ___ never copy an answer.','“I would never break a promise,” said Ronja. → Ronja said that she ___ never break a promise.','would',['will','would have','wills'],'The modal would stays would when the sentence is reported.'],
+[T[5],'“We would prefer an earlier start,” said the runners. → The runners said that they ___ prefer an earlier start.','“We would choose a shorter route,” said the hikers. → The hikers said that they ___ choose a shorter route.','would',['will','would have','are'],'Would plus infinitive is unchanged in reported speech.'],
+[T[5],'“I would help if I had time,” said Ansgar. → Ansgar said that he ___ help if he had time.','“I would join if I felt better,” said Wilma. → Wilma said that she ___ join if she felt better.','would',['will','would have','had'],'In conditional sentences would keeps its form when reported.'],
+[T[5],'“I could already read at five,” said Bo. → Bo said that he ___ already read at five.','“I could already swim at six,” said Alea. → Alea said that she ___ already swim at six.','could',['can','could have','was able'],'Could is already a past form and therefore does not change.'],
+[T[5],'“I could not find the entrance,” said Falk. → Falk said that he ___ not find the entrance.','“I could not open the window,” said Jette. → Jette said that she ___ not open the window.','could',['can','could have','did'],'The past modal could stays the same in reported speech.'],
+[T[5],'“We could see the mountains,” said the campers. → The campers said that they ___ see the mountains.','“We could smell the fresh bread,” said the customers. → The customers said that they ___ smell the fresh bread.','could',['can','could have','were able'],'Could does not shift because there is no earlier form of this modal.'],
+[T[5],'“The concert had ended before we came,” said Timon. → Timon said that the concert ___ before they came.','“The meeting had ended before I called,” said Enna. → Enna said that the meeting ___ before she called.','had ended',['ended','has ended','was ending'],'A past perfect stays a past perfect in reported speech.']
+];
+
+const $=function(id){return document.getElementById(id);};
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+const LETTERS=['A','B','C','D'];
+
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+
+function buildDeck(){
+  const pools=T.map(function(name){return shuffle(PAIRS.filter(function(p){return p[0]===name;}));});
+  const deck=[];
+  for(let block=0;block<12;block++){
+    const order=shuffle([0,1,2,3,4,5]);
+    for(let k=0;k<order.length;k++){
+      const p=pools[order[k]][block];
+      const opts=[p[3],p[4][0],p[4][1],p[4][2]];
+      deck.push({topic:p[0],sA:p[1],sB:p[2],correct:p[3],expl:p[5],swap:Math.random()<0.5,orders:[shuffle(opts),shuffle(opts)]});
+    }
+  }
+  return deck;
+}
+
+let decks=[];
+function cardAt(n){
+  const d=Math.floor(n/PAIRS.length);
+  while(decks.length<=d){decks.push(buildDeck());}
+  return decks[d][n%PAIRS.length];
+}
+
+const state={phase:'setup',paused:false,durationMs:120000,endClock:0,cdEnd:0};
+let clock=0,lastPerf=0,lastDraw=0;
+
+function makeTeam(i){
+  return {i:i,side:i===0?'A':'B',score:0,answered:0,hits:0,idx:0,locked:true,advanceAt:null,shotStart:null,card:null,opts:[],sentence:'',btns:[]};
+}
+const teams=[makeTeam(0),makeTeam(1)];
+const TEAM_NAMES=['Team Blue','Team Coral'];
+
+function updateScore(t){
+  const el=$('score'+t.side);
+  el.textContent=String(t.score);
+  el.setAttribute('aria-label',TEAM_NAMES[t.i]+': '+t.score+' baskets');
+}
+
+function refreshButtons(){
+  for(let i=0;i<2;i++){
+    const t=teams[i];
+    const on=state.phase==='playing'&&!state.paused&&!t.locked;
+    for(let k=0;k<t.btns.length;k++){t.btns[k].disabled=!on;}
+  }
+}
+
+function renderTask(t){
+  $('topic'+t.side).textContent=t.card.topic;
+  $('num'+t.side).textContent='Question '+(t.idx+1);
+  const p=$('sent'+t.side);
+  p.textContent='';
+  const parts=t.sentence.split('___');
+  for(let k=0;k<parts.length;k++){
+    p.appendChild(document.createTextNode(parts[k]));
+    if(k<parts.length-1){
+      const g=document.createElement('span');
+      g.className='gap';
+      g.textContent='___';
+      p.appendChild(g);
+    }
+  }
+  const grid=$('grid'+t.side);
+  grid.textContent='';
+  t.btns=[];
+  for(let k=0;k<t.opts.length;k++){
+    const opt=t.opts[k];
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='ans';
+    b.setAttribute('aria-label',opt);
+    const badge=document.createElement('span');
+    badge.className='badge';
+    badge.setAttribute('aria-hidden','true');
+    badge.textContent=LETTERS[k];
+    const txt=document.createElement('span');
+    txt.textContent=opt;
+    b.appendChild(badge);
+    b.appendChild(txt);
+    b.addEventListener('click',function(){answer(t,opt,b);});
+    grid.appendChild(b);
+    t.btns.push(b);
+  }
+  const fb=$('fb'+t.side);
+  fb.className='fb';
+  fb.textContent='';
+  refreshButtons();
+}
+
+function loadQuestion(t){
+  t.card=cardAt(t.idx);
+  const first=t.card.swap?t.card.sB:t.card.sA;
+  const second=t.card.swap?t.card.sA:t.card.sB;
+  t.sentence=t.i===0?first:second;
+  t.opts=t.card.orders[t.i];
+  t.locked=false;
+  t.advanceAt=null;
+  renderTask(t);
+}
+
+function showSwish(t){
+  const el=$('swish'+t.side);
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.style.animationPlayState='running';
+  el.classList.add('show');
+}
+
+function answer(t,opt,btn){
+  if(state.phase!=='playing'||state.paused||t.locked){return;}
+  t.locked=true;
+  refreshButtons();
+  const ok=opt===t.card.correct;
+  t.answered++;
+  for(let k=0;k<t.btns.length;k++){
+    if(t.btns[k].getAttribute('aria-label')===t.card.correct){t.btns[k].classList.add('correct');}
+  }
+  const fb=$('fb'+t.side);
+  if(ok){
+    t.hits++;
+    t.score++;
+    updateScore(t);
+    t.shotStart=clock;
+    showSwish(t);
+    fb.className='fb good';
+    fb.textContent='Correct! +1 · '+t.card.expl;
+  }else{
+    btn.classList.add('wrong');
+    fb.className='fb bad';
+    fb.textContent='Correct answer: '+t.card.correct+' · '+t.card.expl;
+  }
+  t.advanceAt=clock+1600;
+}
+
+function nextQuestion(t){
+  t.idx++;
+  loadQuestion(t);
+}
+
+function setStatus(text){$('status').textContent=text;}
+
+function fmt(ms){
+  const s=Math.max(0,Math.ceil(ms/1000));
+  const m=Math.floor(s/60);
+  const r=s%60;
+  return (m<10?'0':'')+m+':'+(r<10?'0':'')+r;
+}
+
+function startGame(){
+  decks=[];
+  for(let i=0;i<2;i++){
+    const t=teams[i];
+    t.score=0;t.answered=0;t.hits=0;t.idx=0;t.locked=true;t.advanceAt=null;t.shotStart=null;
+    updateScore(t);
+    $('swish'+t.side).classList.remove('show');
+    loadQuestion(t);
+    t.locked=true;
+  }
+  clock=0;
+  state.paused=false;
+  state.phase='countdown';
+  state.cdEnd=3000;
+  $('countdown').hidden=false;
+  $('countdownNum').textContent='3';
+  $('timeMask').style.width='0%';
+  $('clock').textContent=fmt(state.durationMs);
+  $('clock').classList.remove('warn');
+  setStatus('Get ready');
+  refreshButtons();
+}
+
+function startPlay(){
+  state.phase='playing';
+  state.endClock=clock+state.durationMs;
+  $('countdown').hidden=true;
+  setStatus('Game on');
+  for(let i=0;i<2;i++){teams[i].locked=false;}
+  refreshButtons();
+}
+
+function endGame(){
+  state.phase='over';
+  state.paused=false;
+  for(let i=0;i<2;i++){teams[i].locked=true;teams[i].advanceAt=null;}
+  refreshButtons();
+  $('clock').textContent='00:00';
+  $('clock').classList.add('warn');
+  $('timeMask').style.width='100%';
+  setStatus('Final buzzer');
+  const a=teams[0],b=teams[1];
+  let title='It is a draw!';
+  let line='Both teams scored '+a.score+'. Same rules, same difficulty, same result.';
+  if(a.score>b.score){title='Team Blue wins!';line='Team Blue takes it '+a.score+' to '+b.score+'.';}
+  if(b.score>a.score){title='Team Coral wins!';line='Team Coral takes it '+b.score+' to '+a.score+'.';}
+  $('resultTitle').textContent=title;
+  $('resultLine').textContent=line;
+  $('resScoreA').textContent=String(a.score);
+  $('resScoreB').textContent=String(b.score);
+  $('resMetaA').textContent=a.answered+(a.answered===1?' answer · ':' answers · ')+(a.answered?Math.round(a.hits/a.answered*100):0)+'% accuracy';
+  $('resMetaB').textContent=b.answered+(b.answered===1?' answer · ':' answers · ')+(b.answered?Math.round(b.hits/b.answered*100):0)+'% accuracy';
+  if(dlgPause.open){ignoreClose=true;dlgPause.close();ignoreClose=false;}
+  if(dlgHelp.open){ignoreClose=true;dlgHelp.close();ignoreClose=false;}
+  if(!dlgResult.open){dlgResult.showModal();}
+}
+
+function tick(){
+  if(state.phase==='countdown'){
+    const left=state.cdEnd-clock;
+    if(left<=0){startPlay();}
+    else{
+      const n=String(Math.ceil(left/1000));
+      if($('countdownNum').textContent!==n){$('countdownNum').textContent=n;}
+    }
+  }
+  if(state.phase==='playing'){
+    const rem=state.endClock-clock;
+    if(rem<=0){endGame();return;}
+    const txt=fmt(rem);
+    if($('clock').textContent!==txt){$('clock').textContent=txt;}
+    $('clock').classList.toggle('warn',rem<=10000);
+    const used=1-rem/state.durationMs;
+    $('timeMask').style.width=(Math.min(1,Math.max(0,used))*100).toFixed(2)+'%';
+    for(let i=0;i<2;i++){
+      const t=teams[i];
+      if(t.advanceAt!==null&&clock>=t.advanceAt){nextQuestion(t);}
+    }
+  }
+  for(let i=0;i<2;i++){
+    const t=teams[i];
+    if(t.shotStart!==null&&clock>t.shotStart+1600){
+      t.shotStart=null;
+      $('swish'+t.side).classList.remove('show');
+    }
+  }
+}
+
+function resizeCanvas(cv){
+  const r=cv.getBoundingClientRect();
+  if(r.width<2||r.height<2){return false;}
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=Math.round(r.width*dpr);
+  const h=Math.round(r.height*dpr);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  return true;
+}
+
+function drawBall(ctx,x,y,r,ang){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(ang);
+  ctx.fillStyle='#e8792c';
+  ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#70330f';
+  ctx.lineWidth=1.6;
+  ctx.beginPath();ctx.moveTo(-r,0);ctx.lineTo(r,0);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,-r);ctx.lineTo(0,r);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-r*0.94,-r*0.36);ctx.bezierCurveTo(-r*0.3,-r*0.06,r*0.3,-r*0.06,r*0.94,-r*0.36);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-r*0.94,r*0.36);ctx.bezierCurveTo(-r*0.3,r*0.06,r*0.3,r*0.06,r*0.94,r*0.36);ctx.stroke();
+  ctx.restore();
+}
+
+function drawPlayer(ctx,x,y,col,skin,bob,armUp){
+  ctx.fillStyle='rgba(0,0,0,.32)';
+  ctx.beginPath();ctx.ellipse(x,y+2,34,7,0,0,Math.PI*2);ctx.fill();
+  const b=bob;
+  ctx.lineCap='round';
+  ctx.strokeStyle='#22344a';
+  ctx.lineWidth=11;
+  ctx.beginPath();ctx.moveTo(x-9,y-40+b);ctx.lineTo(x-15,y-10+b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+9,y-40+b);ctx.lineTo(x+16,y-10+b);ctx.stroke();
+  ctx.fillStyle='#f2f6fa';
+  ctx.fillRect(x-24,y-11+b,17,9);
+  ctx.fillRect(x+8,y-11+b,17,9);
+  ctx.fillStyle='#2c405a';
+  ctx.fillRect(x-17,y-60+b,34,22);
+  ctx.fillStyle=col;
+  ctx.beginPath();
+  ctx.moveTo(x-18,y-59+b);ctx.lineTo(x-16,y-98+b);ctx.lineTo(x+16,y-98+b);ctx.lineTo(x+18,y-59+b);
+  ctx.closePath();ctx.fill();
+  ctx.strokeStyle=skin;
+  ctx.lineWidth=9;
+  if(armUp){
+    ctx.beginPath();ctx.moveTo(x+13,y-94+b);ctx.lineTo(x+30,y-120+b);ctx.lineTo(x+36,y-142+b);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x-13,y-94+b);ctx.lineTo(x-24,y-118+b);ctx.lineTo(x-4,y-136+b);ctx.stroke();
+  }else{
+    ctx.beginPath();ctx.moveTo(x+13,y-94+b);ctx.lineTo(x+27,y-74+b);ctx.lineTo(x+35,y-56+b);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x-13,y-94+b);ctx.lineTo(x-27,y-76+b);ctx.lineTo(x-19,y-56+b);ctx.stroke();
+  }
+  ctx.fillStyle=skin;
+  ctx.beginPath();ctx.ellipse(x,y-111+b,13,15,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1b2a3c';
+  ctx.beginPath();ctx.ellipse(x,y-118+b,13,10,0,Math.PI,0);ctx.fill();
+}
+
+function drawScene(ctx,t){
+  const col=t.i===0?'#53d6f5':'#ff947d';
+  const skin=t.i===0?'#e9c49f':'#8c5836';
+  const rm=reduced.matches;
+  const time=clock/1000;
+  let sp=-1;
+  if(t.shotStart!==null&&!rm){
+    const p=(clock-t.shotStart)/1300;
+    if(p>=0&&p<=1){sp=p;}
+  }
+  const bob=rm?0:Math.sin(time*2.3)*3;
+
+  ctx.lineCap='butt';
+  ctx.globalAlpha=1;
+
+  const g=ctx.createLinearGradient(0,0,0,280);
+  g.addColorStop(0,'#0c1928');
+  g.addColorStop(1,'#243343');
+  ctx.fillStyle=g;
+  ctx.fillRect(0,0,600,280);
+
+  for(let row=0;row<3;row++){
+    const y=26+row*24;
+    for(let i=0;i<22;i++){
+      const x=6+i*27.5+(row%2?13:0);
+      ctx.fillStyle=(i+row)%2?'#3a4757':'#4c596b';
+      ctx.fillRect(x-8,y+1,16,17);
+      ctx.beginPath();ctx.ellipse(x,y-3,6.5,7.5,0,0,Math.PI*2);ctx.fill();
+    }
+  }
+
+  ctx.fillStyle='#15202e';
+  ctx.fillRect(0,92,600,20);
+  ctx.fillStyle=col;
+  ctx.fillRect(0,92,600,4);
+
+  const f=ctx.createLinearGradient(0,112,0,280);
+  f.addColorStop(0,'#8a5a30');
+  f.addColorStop(1,'#cd965d');
+  ctx.fillStyle=f;
+  ctx.fillRect(0,112,600,168);
+
+  ctx.strokeStyle='rgba(88,50,22,.30)';
+  ctx.lineWidth=1.4;
+  for(let i=-3;i<=19;i++){
+    const xt=i*36;
+    const xb=(xt-300)*1.55+300;
+    ctx.beginPath();ctx.moveTo(xt,112);ctx.lineTo(xb,280);ctx.stroke();
+  }
+  const seams=[146,186,236];
+  for(let i=0;i<seams.length;i++){
+    ctx.beginPath();ctx.moveTo(0,seams[i]);ctx.lineTo(600,seams[i]);ctx.stroke();
+  }
+
+  ctx.strokeStyle='rgba(246,241,232,.55)';
+  ctx.lineWidth=2.4;
+  ctx.strokeRect(392,150,158,92);
+  ctx.beginPath();ctx.arc(392,196,44,Math.PI/2,Math.PI*1.5);ctx.stroke();
+  ctx.beginPath();ctx.arc(16,202,62,-Math.PI/2,Math.PI/2);ctx.stroke();
+
+  ctx.fillStyle='#1a2735';
+  ctx.fillRect(556,118,11,132);
+  ctx.strokeStyle='#1a2735';
+  ctx.lineWidth=6;
+  ctx.beginPath();ctx.moveTo(556,132);ctx.lineTo(528,132);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(556,158);ctx.lineTo(528,150);ctx.stroke();
+  ctx.fillStyle='#f4f8fc';
+  ctx.fillRect(514,86,14,74);
+  ctx.strokeStyle='#b9c6d4';
+  ctx.lineWidth=2;
+  ctx.strokeRect(514,86,14,74);
+  ctx.strokeStyle='#e8792c';
+  ctx.lineWidth=3;
+  ctx.strokeRect(509,124,12,28);
+
+  const wob=(!rm&&sp>0.58&&sp<0.95)?Math.sin((sp-0.58)*46)*(1-(sp-0.58)/0.37)*5:0;
+  ctx.strokeStyle='rgba(248,250,252,.78)';
+  ctx.lineWidth=1.6;
+  for(let i=0;i<6;i++){
+    const a=Math.PI*(i/5);
+    const x1=486+Math.cos(a)*24;
+    const x2=486+Math.cos(a)*13+wob;
+    ctx.beginPath();ctx.moveTo(x1,158);ctx.lineTo(x2,186);ctx.stroke();
+  }
+  ctx.beginPath();ctx.ellipse(486+wob*0.4,168,20,4.5,0,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(486+wob*0.8,180,15,3.5,0,0,Math.PI*2);ctx.stroke();
+  ctx.strokeStyle='#e8792c';
+  ctx.lineWidth=5;
+  ctx.beginPath();ctx.ellipse(486,158,24,6,0,0,Math.PI*2);ctx.stroke();
+
+  drawPlayer(ctx,150,250,col,skin,bob,sp>=0&&sp<0.22);
+
+  if(sp<0){
+    drawBall(ctx,186,194+bob,11,0);
+  }else if(sp<0.6){
+    const u=sp/0.6;
+    const x=190+(486-190)*u;
+    const y=120+(140-120)*u-84*Math.sin(Math.PI*u);
+    drawBall(ctx,x,y,11,sp*9);
+  }else if(sp<0.86){
+    const v=(sp-0.6)/0.26;
+    drawBall(ctx,486,140+(216-140)*v,11,sp*9);
+  }
+
+  if(!rm&&sp>0.6&&sp<1){
+    const k=(sp-0.6)/0.4;
+    ctx.strokeStyle=col;
+    ctx.globalAlpha=Math.max(0,1-k);
+    ctx.lineWidth=3;
+    for(let i=0;i<10;i++){
+      const a=Math.PI*2*(i/10)+k*0.6;
+      const r1=26+k*16;
+      const r2=r1+9;
+      ctx.beginPath();
+      ctx.moveTo(486+Math.cos(a)*r1,158+Math.sin(a)*r1*0.55);
+      ctx.lineTo(486+Math.cos(a)*r2,158+Math.sin(a)*r2*0.55);
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+}
+
+function drawTeam(cv,t){
+  if(!resizeCanvas(cv)){return;}
+  const ctx=cv.getContext('2d');
+  ctx.setTransform(cv.width/600,0,0,cv.height/280,0,0);
+  ctx.clearRect(0,0,600,280);
+  ctx.save();
+  if(t.i===1){ctx.translate(600,0);ctx.scale(-1,1);}
+  drawScene(ctx,t);
+  ctx.restore();
+}
+
+function render(){
+  drawTeam($('canvasA'),teams[0]);
+  drawTeam($('canvasB'),teams[1]);
+}
+
+function frame(now){
+  requestAnimationFrame(frame);
+  if(!lastPerf){lastPerf=now;}
+  let dt=now-lastPerf;
+  lastPerf=now;
+  if(dt<0){dt=0;}
+  if(dt>250){dt=250;}
+  if((state.phase==='countdown'||state.phase==='playing')&&!state.paused){clock+=dt;}
+  tick();
+  if(now-lastDraw>=33){lastDraw=now;render();}
+}
+
+const dlgSetup=$('dlgSetup');
+const dlgPause=$('dlgPause');
+const dlgResult=$('dlgResult');
+const dlgHelp=$('dlgHelp');
+let ignoreClose=false;
+let helpFromSetup=false;
+
+function setSwishPlayState(paused){
+  const s=paused?'paused':'running';
+  $('swishA').style.animationPlayState=s;
+  $('swishB').style.animationPlayState=s;
+}
+
+function pauseGame(showBox){
+  if(state.phase!=='playing'&&state.phase!=='countdown'){return;}
+  if(!state.paused){
+    state.paused=true;
+    setStatus('Paused');
+    setSwishPlayState(true);
+    refreshButtons();
+  }
+  if(showBox&&!dlgPause.open&&!dlgHelp.open&&!dlgSetup.open&&!dlgResult.open){dlgPause.showModal();}
+}
+
+function resumeGame(){
+  if(state.phase!=='playing'&&state.phase!=='countdown'){return;}
+  state.paused=false;
+  setStatus(state.phase==='countdown'?'Get ready':'Game on');
+  setSwishPlayState(false);
+  refreshButtons();
+}
+
+function openSetup(){
+  if(dlgPause.open){ignoreClose=true;dlgPause.close();ignoreClose=false;}
+  if(dlgResult.open){ignoreClose=true;dlgResult.close();ignoreClose=false;}
+  if(dlgHelp.open){ignoreClose=true;dlgHelp.close();ignoreClose=false;}
+  if(state.phase==='playing'||state.phase==='countdown'){pauseGame(false);}
+  if(!dlgSetup.open){dlgSetup.showModal();}
+}
+
+let chosen=120;
+const timeButtons=Array.prototype.slice.call(document.querySelectorAll('.time'));
+function selectTime(btn){
+  for(let i=0;i<timeButtons.length;i++){
+    timeButtons[i].setAttribute('aria-pressed',timeButtons[i]===btn?'true':'false');
+  }
+  const v=btn.getAttribute('data-sec');
+  $('customSec').disabled=v!=='custom';
+  chosen=v==='custom'?'custom':parseInt(v,10);
+  $('setupError').hidden=true;
+}
+for(let i=0;i<timeButtons.length;i++){
+  timeButtons[i].addEventListener('click',function(){selectTime(this);});
+}
+
+$('btnStart').addEventListener('click',function(){
+  let sec=chosen;
+  if(sec==='custom'){
+    const raw=$('customSec').value.trim();
+    const num=Number(raw);
+    if(raw===''||!Number.isInteger(num)||num<15||num>1800){
+      const err=$('setupError');
+      err.textContent='Please enter a whole number between 15 and 1800 seconds.';
+      err.hidden=false;
+      $('customSec').focus();
+      return;
+    }
+    sec=num;
+  }
+  $('setupError').hidden=true;
+  state.durationMs=sec*1000;
+  ignoreClose=true;dlgSetup.close();ignoreClose=false;
+  startGame();
+});
+
+$('btnPause').addEventListener('click',function(){
+  if(state.phase==='playing'||state.phase==='countdown'){pauseGame(true);}
+});
+$('btnDuration').addEventListener('click',openSetup);
+$('btnResume').addEventListener('click',function(){dlgPause.close();});
+$('btnPauseSetup').addEventListener('click',openSetup);
+$('btnRematch').addEventListener('click',function(){
+  ignoreClose=true;dlgResult.close();ignoreClose=false;
+  startGame();
+});
+$('btnResultSetup').addEventListener('click',openSetup);
+
+function openHelp(fromSetup){
+  helpFromSetup=!!fromSetup;
+  if(fromSetup&&dlgSetup.open){ignoreClose=true;dlgSetup.close();ignoreClose=false;}
+  if(state.phase==='playing'||state.phase==='countdown'){pauseGame(false);}
+  if(dlgPause.open){ignoreClose=true;dlgPause.close();ignoreClose=false;}
+  if(!dlgHelp.open){dlgHelp.showModal();}
+}
+$('btnHelp').addEventListener('click',function(){openHelp(false);});
+$('btnHelpSetup').addEventListener('click',function(){openHelp(true);});
+$('btnCloseHelp').addEventListener('click',function(){dlgHelp.close();});
+
+dlgSetup.addEventListener('cancel',function(e){e.preventDefault();});
+dlgResult.addEventListener('cancel',function(e){e.preventDefault();});
+dlgPause.addEventListener('close',function(){
+  if(ignoreClose){return;}
+  resumeGame();
+});
+dlgHelp.addEventListener('close',function(){
+  if(ignoreClose){return;}
+  if(helpFromSetup){helpFromSetup=false;if(!dlgSetup.open){dlgSetup.showModal();}return;}
+  resumeGame();
+});
+
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden){pauseGame(true);}
+});
+window.addEventListener('pagehide',function(){pauseGame(true);});
+
+updateScore(teams[0]);
+updateScore(teams[1]);
+loadQuestion(teams[0]);
+loadQuestion(teams[1]);
+teams[0].locked=true;
+teams[1].locked=true;
+refreshButtons();
+$('clock').textContent=fmt(state.durationMs);
+requestAnimationFrame(frame);
+dlgSetup.showModal();
+</script>
+</body>
+</html>
