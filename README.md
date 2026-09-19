@@ -4,7 +4,7 @@ Duell-Lernspiel für zwei Teams an einem iPad, nur zum Thema direkte und
 indirekte Rede. Gegeben ist jeweils ein Satz in direkter Rede, gefüllt wird die
 Lücke in der indirekten Rede. Jede richtige Antwort ist ein Korb.
 
-**Spielen:** https://teachingeng.github.io/english-hoops-reported-speech/
+**Spielen:** https://digitalteaching.github.io/english-hoops-reported-speech/
 
 ## Inhalt
 
